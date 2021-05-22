@@ -140,8 +140,6 @@ public class ResourceController {
                     application = saveApplication(app);
                 }
 
-                System.out.println(request);
-
                 Resource resource = new Resource();
                 resource.setId(resourceId);
                 resource.setDevice(device);

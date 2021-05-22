@@ -90,7 +90,7 @@ public class ResourceServiceImpl implements ResourceService {
                     .deviceMac(resource.getDevice().getMac())
                     .camera(resource.getCamera())
                     .contact(resource.getContact())
-                    .gps(resource.getContact())
+                    .gps(resource.getGps())
                     .memory(resource.getMemory())
                     .microphone(resource.getMicrophone())
                     .sms(resource.getSms())
