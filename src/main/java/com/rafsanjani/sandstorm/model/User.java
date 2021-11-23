@@ -1,15 +1,15 @@
 package com.rafsanjani.sandstorm.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@EqualsAndHashCode
+@Builder
 public class User {
 
     @Id

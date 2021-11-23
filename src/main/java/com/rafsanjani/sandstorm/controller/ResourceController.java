@@ -5,19 +5,19 @@ import com.rafsanjani.sandstorm.dto.response.ResourceResponse;
 import com.rafsanjani.sandstorm.model.*;
 import com.rafsanjani.sandstorm.service.*;
 import com.rafsanjani.sandstorm.utility.Generator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController {
 
-    private static Logger logger = Logger.getLogger(ResourceController.class.getName());
 
     private AreaService areaService;
     private AgeGroupService ageGroupService;
@@ -64,12 +64,10 @@ public class ResourceController {
 
         if(!resources.isEmpty()){
 
-            List<ResourceResponse> responses = resourceService.saveResources(resources);
-
-            return ResponseEntity.ok(responses);
+            return ResponseEntity.ok(resourceService.saveResources(resources));
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.badRequest().build();
     }
 
     private Application saveApplication(Application application){
@@ -91,7 +89,7 @@ public class ResourceController {
 
         List<Resource> resources = new ArrayList<>();
 
-        for(FeedRequest request : list){
+        list.forEach( request -> {
 
             String deviceId = Generator.generatePrimaryKey(request.getMac().replaceAll(":", "") + request.getAndroidVersion());
             String applicationId = Generator.generatePrimaryKey(request.getPackageName() + request.getApkVersion());
@@ -112,19 +110,22 @@ public class ResourceController {
                 }
                 else{
 
-                    User newUser = new User();
-                    newUser.setGender(request.getGender());
-                    newUser.setAgeGroup(ageGroupService.getAge(request.getAgeId()));
-                    newUser.setEducation(educationService.getEducation(request.getEducationId()));
-                    newUser.setArea(areaService.getArea(request.getAreaId()));
+                    User newUser = User.builder()
+                            .gender(request.getGender())
+                            .ageGroup(ageGroupService.getAge(request.getAgeId()))
+                            .education(educationService.getEducation(request.getEducationId()))
+                            .area(areaService.getArea(request.getAreaId()))
+                            .build();
+
                     User user = saveUser(newUser);
 
-                    Device mobileDevice = new Device();
-                    mobileDevice.setId(deviceId);
-                    mobileDevice.setUser(user);
-                    mobileDevice.setName(request.getName());
-                    mobileDevice.setMac(request.getMac());
-                    mobileDevice.setAndroidVersion(request.getAndroidVersion());
+                    Device mobileDevice = Device.builder()
+                            .id(deviceId)
+                            .user(user)
+                            .name(request.getName())
+                            .mac(request.getMac())
+                            .androidVersion(request.getAndroidVersion())
+                            .build();
                     device = saveDevice(mobileDevice);
                 }
 
@@ -154,7 +155,7 @@ public class ResourceController {
 
                 resources.add(resource);
             }
-        }
+        });
 
         return resources;
     }

@@ -9,6 +9,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+@Builder
 public class Device {
 
     @Id

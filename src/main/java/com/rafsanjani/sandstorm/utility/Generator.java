@@ -1,14 +1,13 @@
 package com.rafsanjani.sandstorm.utility;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
-import java.util.logging.Logger;
 
+@Slf4j
 public class Generator {
-
-    private static Logger logger = Logger.getLogger(Generator.class.getName());
 
     public static String generatePrimaryKey(String id)  {
 

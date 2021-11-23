@@ -1,7 +1,8 @@
 
 $(document).ready(function(){
 
-    const URL = "http://103.140.181.124:8080/sandstorm";
+    const URL = "http://localhost:8080";
+    //const URL = "http://103.140.181.124:8080/sandstorm";
 
     getResources();
     getDevices();
