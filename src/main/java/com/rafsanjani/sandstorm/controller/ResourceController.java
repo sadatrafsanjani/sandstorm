@@ -1,5 +1,6 @@
 package com.rafsanjani.sandstorm.controller;
 
+import com.rafsanjani.sandstorm.dto.request.AppDTO;
 import com.rafsanjani.sandstorm.dto.request.FeedRequest;
 import com.rafsanjani.sandstorm.dto.response.ResourceResponse;
 import com.rafsanjani.sandstorm.model.*;
@@ -57,101 +58,104 @@ public class ResourceController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postFeed(@RequestBody List<FeedRequest> request){
+    public ResponseEntity<?> postFeed(@RequestBody FeedRequest request){
 
-        List<Resource> resources = processResources(request);
+        List<ResourceResponse> resources = processResources(request);
 
         if(!resources.isEmpty()){
 
-            return ResponseEntity.ok(resourceService.saveResources(resources));
+            return ResponseEntity.ok(resources);
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().build();
     }
 
-    private Application saveApplication(Application application){
+    private List<ResourceResponse> processResources(FeedRequest feed){
 
-        return applicationService.saveApplication(application);
-    }
+        List<ResourceResponse> resources = new ArrayList<>();
 
-    private Device saveDevice(Device device){
+        String deviceId = Generator.generatePrimaryKey(feed.getDevice().getMac().replaceAll(":", "") + feed.getDevice().getAndroidVersion());
+        Device device;
 
-        return deviceService.saveDevice(device);
-    }
+        //Check Device if exist in database
+        if(deviceService.getDevice(deviceId) == null){
 
-    private User saveUser(User user){
+            User user = userService.saveUser(User.builder()
+                    .gender(feed.getUser().getGender())
+                    .ageGroup(ageGroupService.getAge(feed.getUser().getAgeId()))
+                    .education(educationService.getEducation(feed.getUser().getEducationId()))
+                    .area(areaService.getArea(feed.getUser().getAreaId()))
+                    .build());
 
-        return userService.saveUser(user);
-    }
+            device = deviceService.saveDevice(Device.builder()
+                    .id(deviceId)
+                    .user(user)
+                    .name(feed.getDevice().getName())
+                    .mac(feed.getDevice().getMac())
+                    .androidVersion(feed.getDevice().getAndroidVersion())
+                    .build());
+        }
+        else{
 
-    private List<Resource> processResources(List<FeedRequest> list){
+            device = deviceService.getDevice(deviceId);
+        }
 
-        List<Resource> resources = new ArrayList<>();
+        feed.getPayload().forEach( app -> {
 
-        list.forEach( request -> {
+            String applicationId = Generator.generatePrimaryKey(app.getPackageName() + app.getApkVersion());
+            Application application;
 
-            String deviceId = Generator.generatePrimaryKey(request.getMac().replaceAll(":", "") + request.getAndroidVersion());
-            String applicationId = Generator.generatePrimaryKey(request.getPackageName() + request.getApkVersion());
-            String resourceId = Generator.generatePrimaryKey(
-                    request.getMac().replaceAll(":", "") +
-                            request.getAndroidVersion() +
-                            request.getPackageName() +
-                            request.getApkVersion()
-            );
-
-            if(resourceService.getResource(resourceId) == null){
-
-                Application application;
-                Device device;
-
-                if(deviceService.getDevice(deviceId) != null){
-                    device = deviceService.getDevice(deviceId);
-                }
-                else{
-
-                    User user = saveUser(User.builder()
-                            .gender(request.getGender())
-                            .ageGroup(ageGroupService.getAge(request.getAgeId()))
-                            .education(educationService.getEducation(request.getEducationId()))
-                            .area(areaService.getArea(request.getAreaId()))
-                            .build());
-
-                    device = saveDevice(Device.builder()
-                            .id(deviceId)
-                            .user(user)
-                            .name(request.getName())
-                            .mac(request.getMac())
-                            .androidVersion(request.getAndroidVersion())
-                            .build());
-                }
-
-                if(applicationService.getApplication(applicationId) != null){
-                    application = applicationService.getApplication(applicationId);
-                }
-                else{
-                    application = saveApplication(Application.builder()
-                            .id(applicationId)
-                            .name(request.getApplicationName())
-                            .packages(request.getPackageName())
-                            .apkVersion(request.getApkVersion())
-                            .build());
-                }
-
-                resources.add(Resource.builder()
-                        .id(resourceId)
-                        .device(device)
-                        .application(application)
-                        .camera(request.getCamera())
-                        .contact(request.getContact())
-                        .gps(request.getGps())
-                        .sms(request.getSms())
-                        .microphone(request.getMicrophone())
-                        .memory(request.getMemory())
-                        .recordedAt(Instant.now())
+            //Check if application exist in database
+            if(applicationService.getApplication(applicationId) == null){
+                application = applicationService.saveApplication(Application.builder()
+                        .id(applicationId)
+                        .name(app.getApplicationName())
+                        .packages(app.getPackageName())
+                        .apkVersion(app.getApkVersion())
                         .build());
+            }
+            else{
+                application = applicationService.getApplication(applicationId);
+            }
+
+            String status = generateStatus(app);
+            String resourceId = Generator.generatePrimaryKey(deviceId + applicationId + status);
+            Resource resource = resourceService.getResource(resourceId);
+
+            //Check app record of specific device not exist in database
+            if(resource == null){
+                ResourceResponse response = resourceService.saveResource(Resource.builder()
+                                .id(resourceId)
+                                .device(device)
+                                .application(application)
+                                .camera(app.getCamera())
+                                .microphone(app.getMicrophone())
+                                .memory(app.getMemory())
+                                .sms(app.getSms())
+                                .contact(app.getContact())
+                                .gps(app.getGps())
+                                .status(generateStatus(app))
+                                .recordedAt(Instant.now())
+                        .build());
+                resources.add(response);
             }
         });
 
         return resources;
+    }
+
+    private String generateStatus(AppDTO dto){
+
+        return checkState(dto.getCamera())
+                + checkState(dto.getMicrophone())
+                + checkState(dto.getMemory())
+                + checkState(dto.getSms())
+                + checkState(dto.getContact())
+                + checkState(dto.getGps());
+    }
+
+    private String checkState(boolean state){
+
+        return state ? "1" : "0";
     }
 }

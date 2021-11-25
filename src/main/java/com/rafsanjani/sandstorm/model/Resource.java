@@ -42,6 +42,9 @@ public class Resource {
     @Column(name = "memory")
     private Boolean memory;
 
+    @Column(name = "status")
+    private String status;
+
     @Column(name = "recorded_at")
     private Instant recordedAt;
 }

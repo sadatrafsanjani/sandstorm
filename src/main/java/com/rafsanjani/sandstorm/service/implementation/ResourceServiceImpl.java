@@ -34,22 +34,6 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<ResourceResponse> saveResources(List<Resource> resources) {
-
-        List<Resource> resourceList = (List<Resource>) resourceRepository.saveAll(resources);
-        List<ResourceResponse> responses = new ArrayList<>();
-
-        if(resourceList.size() > 0){
-
-            for(Resource resource : resourceList){
-                responses.add(modelToDto(resource));
-            }
-        }
-
-        return responses;
-    }
-
-    @Override
     public List<ResourceResponse> getResources(){
 
         List<ResourceResponse> responseList = new ArrayList<>();

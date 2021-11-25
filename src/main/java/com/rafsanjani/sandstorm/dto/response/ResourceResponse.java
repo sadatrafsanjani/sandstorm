@@ -25,5 +25,4 @@ public class ResourceResponse {
     private Boolean sms;
     private Boolean memory;
     private String time;
-
 }

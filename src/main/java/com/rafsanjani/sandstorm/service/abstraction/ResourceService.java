@@ -7,7 +7,6 @@ import java.util.List;
 public interface ResourceService {
 
     ResourceResponse saveResource(Resource resource);
-    List<ResourceResponse> saveResources(List<Resource> resources);
     List<ResourceResponse> getResources();
     Resource getResource(String id);
 }
