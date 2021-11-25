@@ -8,8 +8,8 @@ import java.time.Instant;
 @Table(name = "resources")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
+@Builder
 public class Resource {
 
     @Id

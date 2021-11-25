@@ -3,7 +3,7 @@ package com.rafsanjani.sandstorm.controller;
 import com.rafsanjani.sandstorm.dto.request.FeedRequest;
 import com.rafsanjani.sandstorm.dto.response.ResourceResponse;
 import com.rafsanjani.sandstorm.model.*;
-import com.rafsanjani.sandstorm.service.*;
+import com.rafsanjani.sandstorm.service.abstraction.*;
 import com.rafsanjani.sandstorm.utility.Generator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/resources")
 public class ResourceController {
-
 
     private AreaService areaService;
     private AgeGroupService ageGroupService;
@@ -110,50 +109,46 @@ public class ResourceController {
                 }
                 else{
 
-                    User newUser = User.builder()
+                    User user = saveUser(User.builder()
                             .gender(request.getGender())
                             .ageGroup(ageGroupService.getAge(request.getAgeId()))
                             .education(educationService.getEducation(request.getEducationId()))
                             .area(areaService.getArea(request.getAreaId()))
-                            .build();
+                            .build());
 
-                    User user = saveUser(newUser);
-
-                    Device mobileDevice = Device.builder()
+                    device = saveDevice(Device.builder()
                             .id(deviceId)
                             .user(user)
                             .name(request.getName())
                             .mac(request.getMac())
                             .androidVersion(request.getAndroidVersion())
-                            .build();
-                    device = saveDevice(mobileDevice);
+                            .build());
                 }
 
                 if(applicationService.getApplication(applicationId) != null){
                     application = applicationService.getApplication(applicationId);
                 }
                 else{
-                    Application app = new Application();
-                    app.setId(applicationId);
-                    app.setName(request.getApplicationName());
-                    app.setPackages(request.getPackageName());
-                    app.setApkVersion(request.getApkVersion());
-                    application = saveApplication(app);
+                    application = saveApplication(Application.builder()
+                            .id(applicationId)
+                            .name(request.getApplicationName())
+                            .packages(request.getPackageName())
+                            .apkVersion(request.getApkVersion())
+                            .build());
                 }
 
-                Resource resource = new Resource();
-                resource.setId(resourceId);
-                resource.setDevice(device);
-                resource.setApplication(application);
-                resource.setCamera(request.getCamera());
-                resource.setContact(request.getContact());
-                resource.setGps(request.getGps());
-                resource.setSms(request.getSms());
-                resource.setMicrophone(request.getMicrophone());
-                resource.setMemory(request.getMemory());
-                resource.setRecordedAt(Instant.now());
-
-                resources.add(resource);
+                resources.add(Resource.builder()
+                        .id(resourceId)
+                        .device(device)
+                        .application(application)
+                        .camera(request.getCamera())
+                        .contact(request.getContact())
+                        .gps(request.getGps())
+                        .sms(request.getSms())
+                        .microphone(request.getMicrophone())
+                        .memory(request.getMemory())
+                        .recordedAt(Instant.now())
+                        .build());
             }
         });
 

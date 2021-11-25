@@ -1,7 +1,8 @@
-package com.rafsanjani.sandstorm.service;
+package com.rafsanjani.sandstorm.service.implementation;
 
 import com.rafsanjani.sandstorm.model.Area;
 import com.rafsanjani.sandstorm.repository.AreaRepository;
+import com.rafsanjani.sandstorm.service.abstraction.AreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;

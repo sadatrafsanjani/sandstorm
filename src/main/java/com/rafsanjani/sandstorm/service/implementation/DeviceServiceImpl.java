@@ -1,8 +1,9 @@
-package com.rafsanjani.sandstorm.service;
+package com.rafsanjani.sandstorm.service.implementation;
 
 import com.rafsanjani.sandstorm.dto.response.DeviceResponse;
 import com.rafsanjani.sandstorm.model.Device;
 import com.rafsanjani.sandstorm.repository.DeviceRepository;
+import com.rafsanjani.sandstorm.service.abstraction.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;

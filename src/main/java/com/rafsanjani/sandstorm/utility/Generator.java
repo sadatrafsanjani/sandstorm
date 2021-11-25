@@ -1,7 +1,8 @@
 package com.rafsanjani.sandstorm.utility;
 
+import com.google.common.hash.Hashing;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -11,7 +12,7 @@ public class Generator {
 
     public static String generatePrimaryKey(String id)  {
 
-        return DigestUtils.sha1Hex(id);
+        return Hashing.murmur3_32_fixed().hashString(id, StandardCharsets.UTF_8).toString();
     }
 
     public static String formatInstant(Instant instant){

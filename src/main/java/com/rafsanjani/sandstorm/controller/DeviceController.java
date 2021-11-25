@@ -2,7 +2,7 @@ package com.rafsanjani.sandstorm.controller;
 
 import com.rafsanjani.sandstorm.dto.response.DeviceResponse;
 import com.rafsanjani.sandstorm.model.Device;
-import com.rafsanjani.sandstorm.service.DeviceService;
+import com.rafsanjani.sandstorm.service.abstraction.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

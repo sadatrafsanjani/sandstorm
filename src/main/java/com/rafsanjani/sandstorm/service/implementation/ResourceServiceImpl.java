@@ -1,8 +1,9 @@
-package com.rafsanjani.sandstorm.service;
+package com.rafsanjani.sandstorm.service.implementation;
 
 import com.rafsanjani.sandstorm.dto.response.ResourceResponse;
 import com.rafsanjani.sandstorm.model.Resource;
 import com.rafsanjani.sandstorm.repository.ResourceRepository;
+import com.rafsanjani.sandstorm.service.abstraction.ResourceService;
 import com.rafsanjani.sandstorm.utility.Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,13 @@ public class ResourceServiceImpl implements ResourceService {
         this.resourceRepository = resourceRepository;
     }
 
-    public Resource saveResource(Resource resource){
+    public ResourceResponse saveResource(Resource resource){
 
         Resource savedResource = resourceRepository.save(resource);
 
         if(savedResource != null){
 
-            return savedResource;
+            return modelToDto(savedResource);
         }
 
         return null;

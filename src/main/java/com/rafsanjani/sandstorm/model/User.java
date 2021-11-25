@@ -1,16 +1,13 @@
 package com.rafsanjani.sandstorm.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Getter
-@Setter
+@Data
 @Builder
 public class User {
 

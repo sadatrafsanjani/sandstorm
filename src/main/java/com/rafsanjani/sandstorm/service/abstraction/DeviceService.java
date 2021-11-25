@@ -1,4 +1,4 @@
-package com.rafsanjani.sandstorm.service;
+package com.rafsanjani.sandstorm.service.abstraction;
 
 import com.rafsanjani.sandstorm.dto.response.DeviceResponse;
 import com.rafsanjani.sandstorm.model.Device;

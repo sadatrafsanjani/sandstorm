@@ -1,8 +1,9 @@
-package com.rafsanjani.sandstorm.service;
+package com.rafsanjani.sandstorm.service.implementation;
 
 import com.rafsanjani.sandstorm.dto.response.AgeGroupResponse;
 import com.rafsanjani.sandstorm.model.AgeGroup;
 import com.rafsanjani.sandstorm.repository.AgeGroupRepository;
+import com.rafsanjani.sandstorm.service.abstraction.AgeGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

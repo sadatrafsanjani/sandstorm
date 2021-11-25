@@ -7,9 +7,7 @@ import javax.persistence.*;
 @Table(name = "devices")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @Builder
 public class Device {
 
