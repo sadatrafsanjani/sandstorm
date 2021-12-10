@@ -12,4 +12,21 @@ public class DashboardController {
         return "index";
     }
 
+    @GetMapping("/about")
+    public String about(){
+
+        return "about";
+    }
+
+    @GetMapping("/contact")
+    public String contact(){
+
+        return "contact";
+    }
+
+    @GetMapping("/privacy-policy")
+    public String privacyPolicy(){
+
+        return "privacy-policy";
+    }
 }
