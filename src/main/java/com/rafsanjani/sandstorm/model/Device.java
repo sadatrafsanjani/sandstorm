@@ -22,8 +22,8 @@ public class Device {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "mac")
-    private String mac;
+    @Column(name = "token")
+    private String token;
 
     @Column(name = "android_version")
     private String androidVersion;

@@ -13,7 +13,7 @@ public class ResourceResponse {
     private String deviceId;
     private String deviceName;
     private String applicationId;
-    private String deviceMac;
+    private String token;
     private String androidVersion;
     private String applicationName;
     private String applicationPackage;

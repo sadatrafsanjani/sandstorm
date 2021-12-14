@@ -72,7 +72,7 @@ public class ResourceServiceImpl implements ResourceService {
                     .apkVersion(resource.getApplication().getApkVersion())
                     .applicationName(resource.getApplication().getName())
                     .applicationPackage(resource.getApplication().getPackages())
-                    .deviceMac(resource.getDevice().getMac())
+                    .token(resource.getDevice().getToken())
                     .camera(resource.getCamera())
                     .contact(resource.getContact())
                     .gps(resource.getGps())

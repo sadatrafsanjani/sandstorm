@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class DeviceDTO {
 
     private String name;
-    private String mac;
+    private String token;
     private String androidVersion;
 }

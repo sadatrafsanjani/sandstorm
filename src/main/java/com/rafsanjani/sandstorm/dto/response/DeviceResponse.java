@@ -14,6 +14,6 @@ public class DeviceResponse {
     private String userEducation;
     private String userGender;
     private String name;
-    private String mac;
+    private String token;
     private String androidVersion;
 }

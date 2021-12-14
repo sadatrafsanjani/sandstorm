@@ -74,7 +74,7 @@ public class ResourceController {
 
         List<ResourceResponse> resources = new ArrayList<>();
 
-        String deviceId = Generator.generatePrimaryKey(feed.getDevice().getMac().replaceAll(":", "") + feed.getDevice().getAndroidVersion());
+        String deviceId = Generator.generatePrimaryKey(feed.getDevice().getToken() + feed.getDevice().getAndroidVersion());
         Device device;
 
         //Check Device if exist in database
@@ -91,7 +91,7 @@ public class ResourceController {
                     .id(deviceId)
                     .user(user)
                     .name(feed.getDevice().getName())
-                    .mac(feed.getDevice().getMac())
+                    .token(feed.getDevice().getToken())
                     .androidVersion(feed.getDevice().getAndroidVersion())
                     .build());
         }

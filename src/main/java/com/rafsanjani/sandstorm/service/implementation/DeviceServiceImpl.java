@@ -49,10 +49,9 @@ public class DeviceServiceImpl implements DeviceService {
 
         List<DeviceResponse> responses = new ArrayList<>();
 
-        for(Device device : getDevices()){
-
+        getDevices().forEach(device -> {
             responses.add(modelToDto(device));
-        }
+        });
 
         return responses;
     }
@@ -68,7 +67,7 @@ public class DeviceServiceImpl implements DeviceService {
                     .userEducation(device.getUser().getEducation().getLevel())
                     .userGender(device.getUser().getGender())
                     .name(device.getName())
-                    .mac(device.getMac())
+                    .token(device.getToken())
                     .androidVersion(device.getAndroidVersion())
                     .build();
         }
