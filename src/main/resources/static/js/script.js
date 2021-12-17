@@ -1,20 +1,20 @@
 
 $(document).ready(function(){
 
-    //const URL = "http://localhost:8080";
-    const URL = "http://103.140.181.124:8080/sandstorm";
+    const URL = "http://localhost:8080";
+    //const URL = "http://103.140.181.124:8080/sandstorm";
 
     getResources();
     getDevices();
 
     function status(flag){
 
-        return (flag == true) ? "Yes" : "No";
+        return (flag === true) ? "Yes" : "No";
     }
 
     function gender(gender){
 
-        return (gender == 'M') ? "Male" : "Female";
+        return (gender === 'M') ? "Male" : "Female";
     }
 
     function getResources(){
@@ -61,7 +61,7 @@ $(document).ready(function(){
                 html += "<tr>";
                 html += "<td>" + (i+1) + "</td>";
                 html += "<td>" + response[i].name + "</td>";
-                html += "<td>" + response[i].mac + "</td>";
+                html += "<td>" + response[i].token + "</td>";
                 html += "<td>" + response[i].androidVersion + "</td>";
                 html += "<td>" + response[i].userAgeGroup + "</td>";
                 html += "<td>" + response[i].userArea + "</td>";
